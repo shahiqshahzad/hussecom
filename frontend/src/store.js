@@ -5,6 +5,7 @@ import {
   productDetailReducer,
   productListReducer,
 } from "./reducers/productReducers";
+import { cartAddReducer } from "./reducers/cartReducers";
 
 const middleware = [thunk];
 
@@ -13,6 +14,7 @@ const initialState = {};
 const reducer = combineReducers({
   productList: productListReducer,
   productDetail: productDetailReducer,
+  cartAdd       :cartAddReducer
 });
 
 const store = createStore(

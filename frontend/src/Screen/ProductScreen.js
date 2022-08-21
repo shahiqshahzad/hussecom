@@ -3,20 +3,24 @@ import { Link, useParams } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from "../component/RatingReviews/Rating";
 import axios from "axios";
-
+import { productDetail } from "../actions/productDetail";
+import { useSelector ,useDispatch } from "react-redux";
+import { addToCart } from "../actions/cartAction";
 const ProductScreen = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState({});
+  // const [product, setProduct] = useState({});
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get(`/d/${id}`);
+  const dispatch = useDispatch();
+  useEffect(() =>{
+    dispatch(productDetail(id))
+  },[dispatch])
+  const productdata = useSelector(state => state.productDetail)
+  const product = productdata.product
 
-      setProduct(data);
-    };
+  const addedToCartHandler = (id) =>{
+dispatch(addToCart(id))
+  }
 
-    fetchProducts();
-  }, []);
   return (
     <>
       <Link className="btn btn-light my-3" to="/">
@@ -71,6 +75,7 @@ const ProductScreen = () => {
                   className="btn-block"
                   type="button"
                   disabled={product.countInStock === 0}
+                  onClick={() =>addedToCartHandler(product._id)}
                 >
                   Add to Cart
                 </Button>
