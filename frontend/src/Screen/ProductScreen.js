@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import { Link, useParams,useNavigate } from "react-router-dom";
+import { Row, Col, Image, ListGroup, Card, Button, Form } from "react-bootstrap";
 import Rating from "../component/RatingReviews/Rating";
 import axios from "axios";
 import { productDetail } from "../actions/productDetail";
@@ -8,17 +8,18 @@ import { useSelector ,useDispatch } from "react-redux";
 import { addToCart } from "../actions/cartAction";
 const ProductScreen = () => {
   const { id } = useParams();
-  // const [product, setProduct] = useState({});
-
+  const [qty, setQty  ]= useState(1)
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+
   useEffect(() =>{
     dispatch(productDetail(id))
   },[dispatch])
   const productdata = useSelector(state => state.productDetail)
   const product = productdata.product
 
-  const addedToCartHandler = (id) =>{
-dispatch(addToCart(id))
+  const addedToCartHandler = () =>{
+     navigate(`/cart/${id}?qty=${qty}`)
   }
 
   return (
@@ -70,12 +71,25 @@ dispatch(addToCart(id))
                   </Col>
                 </Row>
               </ListGroup.Item>
+              {product.countInStock >0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Qty</Col>
+                    <Col>
+                    <Form.Control as='select' value={qty} onChange={(e) =>setQty(e.target.value)}>
+                     { [...Array(product.countInStock).keys()].map((x) =>(
+                        <option key={x+1} value={x+1}>{x+1} </option>
+                      ))}
+                      </Form.Control></Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <Button
                   className="btn-block"
                   type="button"
                   disabled={product.countInStock === 0}
-                  onClick={() =>addedToCartHandler(product._id)}
+                  onClick={() =>addedToCartHandler()}
                 >
                   Add to Cart
                 </Button>

@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Container, Nav } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { addToCart } from '../actions/cartAction.js'
 const Header = () => {
+
+    const cartCount = useSelector((state) => state.addToCart)
+   
+   
     return (
         <header>
             <Navbar bg="dark" variant='dark' collapseOnSelect expand="lg">
