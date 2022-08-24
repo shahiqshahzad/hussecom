@@ -7,7 +7,7 @@ import axios from "axios";
 export const productDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_REQUEST });
-    const { data } = await axios.get(`/d/${id}`);
+    const { data } = await axios.get(`/api/product/${id}`);
     dispatch({
       type: PRODUCT_DETAIL_SUCCESS,
       payload: data,
